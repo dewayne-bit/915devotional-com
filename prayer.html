@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prayer Requests — 9:15 Devotional</title>
+  <meta name="description" content="Submit a prayer request. We pray together, in private.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-mark">9:15</span>
+        <span class="logo-text">Devotional</span>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="devotionals.html">Archive</a>
+        <a href="prayer.html" class="active">Prayer Requests</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="container">
+      <p class="eyebrow">Prayer Requests</p>
+      <h1>We'd be honored to pray with you.</h1>
+      <p class="lede">"Therefore confess your sins to each other and pray for each other so that you may be healed. The prayer of a righteous person is powerful and effective." — James 5:16</p>
+    </div>
+  </section>
+
+  <section class="host-strip">
+    <div class="container">
+      <div class="host-strip-inner">
+        <div class="host-photo">
+          <img src="images/dewayne.png" alt="DeWayne Dunko" onerror="this.style.display='none'; this.parentElement.classList.add('host-photo-placeholder');">
+        </div>
+        <div class="host-text">
+          <p class="host-label">Brought to you by</p>
+          <p class="host-name">DeWayne Dunko</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="prayer-form-section">
+    <div class="container narrow">
+      <div class="form-card">
+        <!-- IMPORTANT: replace YOUR_FORM_ID below with your real Formspree form ID after signing up at formspree.io -->
+        <form id="prayer-form" action="https://formspree.io/f/mzdojgvd" method="POST">
+          <div class="field">
+            <label for="name">Your name <span class="optional">(optional)</span></label>
+            <input type="text" id="name" name="name" autocomplete="name">
+          </div>
+
+          <div class="field">
+            <label for="email">Email <span class="optional">(optional — only if you'd like a follow-up)</span></label>
+            <input type="email" id="email" name="email" autocomplete="email">
+          </div>
+
+          <div class="field">
+            <label for="request">Prayer request</label>
+            <textarea id="request" name="request" rows="7" required placeholder="Share what's on your heart…"></textarea>
+          </div>
+
+          <div class="field checkbox-field">
+            <label>
+              <input type="checkbox" name="private" value="yes">
+              <span>Keep this private — please don't share with the group</span>
+            </label>
+          </div>
+
+          <!-- Honeypot for spam bots -->
+          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+          <input type="hidden" name="_subject" value="New prayer request from 915devotional.com">
+
+          <button type="submit" class="btn btn-primary btn-lg">Send Prayer Request</button>
+          <p class="form-note">Submissions go directly to DeWayne. They are read with care and held in confidence.</p>
+        </form>
+
+        <div id="form-success" class="form-success hidden">
+          <h3>Thank you.</h3>
+          <p>Your prayer request has been received. We'll be lifting it up.</p>
+          <p><em>"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God." — Philippians 4:6</em></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; <span id="year"></span> 9:15 Devotional</p>
+      <p class="footer-note">Walking through scripture together, one morning at a time.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

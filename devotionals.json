@@ -1,0 +1,10 @@
+{
+  "_comment": "To add a new devotional: copy one of the entries below, paste it at the TOP of the array, and update the fields. The 'youtubeId' is the part of a YouTube URL after 'v=' and before any '&'. Example: for https://www.youtube.com/watch?v=6G7a44B6rwg, the id is '6G7a44B6rwg'. Date format: YYYY-MM-DD.",
+  "zoom": {
+    "joinUrl": "https://us05web.zoom.us/j/6369476417?pwd=Jl3bB9baW5d4WOOn6196rwdTE4SVDR.1",
+    "meetingId": "636 947 6417",
+    "passcode": "6NzD92",
+    "scheduleNote": "Mon–Thu at 9:15 AM ET"
+  },
+  "devotionals": []
+}

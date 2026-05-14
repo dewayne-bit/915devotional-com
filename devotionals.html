@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Devotional Archive — 9:15 Devotional</title>
+  <meta name="description" content="Watch every 9:15 morning devotional. Search by date, scripture, or topic.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-mark">9:15</span>
+        <span class="logo-text">Devotional</span>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="devotionals.html" class="active">Archive</a>
+        <a href="prayer.html">Prayer Requests</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="container">
+      <p class="eyebrow">The Archive</p>
+      <h1>Every devotional, anytime.</h1>
+      <p class="lede">Search by date, scripture reference, or keyword. Click any card to watch.</p>
+      <div class="search-bar">
+        <input type="search" id="search-input" placeholder="Search by title, scripture, or keyword…" aria-label="Search devotionals">
+        <span class="search-count" id="search-count"></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="host-strip">
+    <div class="container">
+      <div class="host-strip-inner">
+        <div class="host-photo">
+          <img src="images/dewayne.png" alt="DeWayne Dunko" onerror="this.style.display='none'; this.parentElement.classList.add('host-photo-placeholder');">
+        </div>
+        <div class="host-text">
+          <p class="host-label">Brought to you by</p>
+          <p class="host-name">DeWayne Dunko</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="archive">
+    <div class="container">
+      <div id="archive-list" class="card-grid">
+        <p class="loading">Loading devotionals…</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; <span id="year"></span> 9:15 Devotional</p>
+      <p class="footer-note">Walking through scripture together, one morning at a time.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

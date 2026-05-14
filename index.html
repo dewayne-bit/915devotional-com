@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>9:15 Devotional — Daily Scripture & Prayer</title>
+  <meta name="description" content="A daily 9:15 AM devotional on Zoom, Monday through Thursday. Watch past devotionals, join live, and submit prayer requests.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-mark">9:15</span>
+        <span class="logo-text">Devotional</span>
+      </a>
+      <nav class="nav">
+        <a href="index.html" class="active">Home</a>
+        <a href="devotionals.html">Archive</a>
+        <a href="prayer.html">Prayer Requests</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">Monday – Thursday · 9:15 AM ET</p>
+      <h1>Start your day in the Word.</h1>
+      <p class="lede">A short, daily devotional — usually 10 to 12 minutes. We open scripture, talk about what it means for us, and close in prayer. Join us live on Zoom or watch any time below.</p>
+      <div class="hero-cta">
+        <a href="#join-live" class="btn btn-primary">Join Live on Zoom</a>
+        <a href="devotionals.html" class="btn btn-ghost">Watch Past Devotionals</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="host-strip">
+    <div class="container">
+      <div class="host-strip-inner">
+        <div class="host-photo">
+          <img src="images/dewayne.png" alt="DeWayne Dunko" onerror="this.style.display='none'; this.parentElement.classList.add('host-photo-placeholder');">
+        </div>
+        <div class="host-text">
+          <p class="host-label">Brought to you by</p>
+          <p class="host-name">DeWayne Dunko</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="join-live" class="join-live">
+    <div class="container">
+      <div class="join-card">
+        <div class="join-card-body">
+          <h2>Join Today's Devotional</h2>
+          <p>We meet at <strong>9:15 AM Eastern</strong>, Monday through Thursday. Click below to hop on Zoom — no sign-up required.</p>
+          <p class="schedule-note">Today: <span id="today-status">checking schedule…</span></p>
+          <a id="zoom-link" href="https://zoom.us/j/REPLACE_WITH_MEETING_ID" target="_blank" rel="noopener" class="btn btn-primary btn-lg">Join Zoom Meeting</a>
+          <p class="meeting-id" id="zoom-meta">Meeting ID: <span id="zoom-id">REPLACE_WITH_MEETING_ID</span> · Passcode: <span id="zoom-pass">REPLACE</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="latest">
+    <div class="container">
+      <div class="section-head">
+        <h2>Latest Devotional</h2>
+        <a href="devotionals.html" class="view-all">View archive →</a>
+      </div>
+      <div id="latest-devotional" class="latest-card">
+        <p class="loading">Loading latest devotional…</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="recent">
+    <div class="container">
+      <div class="section-head">
+        <h2>Recent Devotionals</h2>
+        <a href="devotionals.html" class="view-all">See all →</a>
+      </div>
+      <div id="recent-list" class="card-grid">
+        <p class="loading">Loading recent devotionals…</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="prayer-cta">
+    <div class="container">
+      <div class="prayer-cta-inner">
+        <h2>Need prayer?</h2>
+        <p>"Cast all your anxiety on him because he cares for you." — 1 Peter 5:7</p>
+        <a href="prayer.html" class="btn btn-primary">Submit a Prayer Request</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; <span id="year"></span> 9:15 Devotional</p>
+      <p class="footer-note">Walking through scripture together, one morning at a time.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
