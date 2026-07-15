@@ -1,14 +1,250 @@
-<!DOCTYPE html>
+can you show me where each needs to be changedCharted specific file modifications with annotated examplesCharted specific file modifications with annotated examplesHere's index.html with the exact lines marked — this is the full <head> section as it currently exists, with your changes slotted in:
+html<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- CHANGE #1: replace this line -->
+<title>9:15 Devotional — Daily Scripture & Prayer</title>
+<!-- WITH: -->
+<title>DeWayne Dunko — 9:15 Devotional | Daily Scripture & Prayer</title>
+
+<!-- CHANGE #2: replace this line -->
+<meta name="description" content="A daily 9:15 AM devotional on Zoom, Monday through Thursday. Watch past devotionals, join live, and submit prayer requests.">
+<!-- WITH: -->
+<meta name="description" content="Join DeWayne Dunko for the 9:15 AM devotional on Zoom, Monday through Thursday. Watch past devotionals, join live, and submit prayer requests.">
+
+<!-- CHANGE #3: add these new lines right after the description -->
+<link rel="canonical" href="https://915devotional.com/">
+<meta property="og:title" content="DeWayne Dunko — 9:15 Devotional">
+<meta property="og:description" content="Join DeWayne Dunko for the 9:15 AM devotional on Zoom, Monday through Thursday.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://915devotional.com/">
+<meta property="og:image" content="https://915devotional.com/images/dewayne.png">
+
+<link rel="stylesheet" href="styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- CHANGE #4: add this JSON-LD block right before </head> -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "9:15 Devotional",
+  "url": "https://915devotional.com/",
+  "author": {
+    "@type": "Person",
+    "name": "DeWayne Dunko"
+  }
+}
+</script>
+</head>
+<body>
+Change #5 (in the body, further down) — find this section:
+html<section class="hero">
+<div class="container">
+<p class="eyebrow">Monday – Thursday · 9:15 AM ET</p>
+<h1>Start your day in the Word with DeWayne Dunko.</h1>   <!-- ← change this line -->
+Change the <h1> to:
+html<h1>Start your day in the Word with DeWayne Dunko.</h1>
+
+For devotionals.html and prayer.html — I can't pull those files up right now (GitHub's blocking that specific fetch for me), but the pattern is identical: same 5 changes, just swap the URL in canonical/og:url to match that page (e.g. https://915devotional.com/devotionals.html), and adjust the title/description wording to describe that page specifically, e.g.:
+html<title>Devotional Archive with DeWayne Dunko | 9:15 Devotional</title>
+<title>Submit a Prayer Request | 9:15 Devotional with DeWayne Dunko</title>
+If you paste me the <head> section of those two files (just copy them from GitHub), I'll mark up the exact same way.<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>9:15 Devotional — Daily Scripture & Prayer</title>
-  <meta name="description" content="A daily 9:15 AM devotional on Zoom, Monday through Thursday. Watch past devotionals, join live, and submit prayer requests.">
+  <link rel="canonical" href="https://915devotional.com/">
+<meta property="og:title" content="9:15 Devotional — Daily Scripture & Prayer">
+<meta property="og:description" content="A daily 9:15 AM devotional on Zoom, Monday through Thursday.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://915devotional.com/">
+<meta property="og:image" content="https://915devotional.com/images/dewayne.png">
+  <title>DeWayne Dunko — 9:15 Devotional | Daily Scripture & Prayer</title>
+  <meta name="description" content="Watch every 9:15 morning devotional. Search by date, scripture, or topic.">
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-mark">9:15</span>
+        <span class="logo-text">Devotional</span>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="devotionals.html" class="active">Archive</a>
+        <a href="prayer.html">Prayer Requests</a>
+      </nav>
+    </div>
+  </header>
+  <section class="page-hero">
+    <div class="container">
+      <p class="eyebrow">The Archive</p>
+      <h1>Every devotional, anytime.</h1>
+      <p class="lede">Search by date, scripture reference, or keyword. Click any card to watch.</p>
+      <div class="search-bar">
+        <input type="search" id="search-input" placeholder="Search by title, scripture, or keyword…" aria-label="Search devotionals">
+        <span class="search-count" id="search-count"></span>
+      </div>
+    </div>
+  </section>
+  <section class="host-strip">
+    <div class="container">
+      <div class="host-strip-inner">
+        <div class="host-photo">
+          <img src="images/dewayne.png" alt="DeWayne Dunko" onerror="this.style.display='none'; this.parentElement.classList.add('host-photo-placeholder');">
+        </div>
+        <div class="host-text">
+          <p class="host-label">Brought to you by</p>
+          <p class="host-name">DeWayne Dunko</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="archive">
+    <div class="container">
+      <div id="archive-list" class="card-grid">
+        <p class="loading">Loading devotionals…</p>
+      </div>
+    </div>
+  </section>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; <span id="year"></span> 9:15 Devotional</p>
+      <p class="footer-note">Walking through scripture together, one morning at a time.</p>
+    </div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>Show moreIdentified metadata inconsistencies and pinpointed necessary page-specific updatesIdentified metadata inconsistencies and pinpointed necessary page-specific updatesGood progress — you already added the OG tags and updated the title here. Two things still need fixing on this page (the OG tags/canonical were pasted from index.html and still point at the homepage instead of this page):
+html<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- CHANGE #1: these 3 lines still point at the homepage — fix the URLs -->
+  <link rel="canonical" href="https://915devotional.com/">
+  <!-- change to: -->
+  <link rel="canonical" href="https://915devotional.com/devotionals.html">
+
+<meta property="og:url" content="https://915devotional.com/">
+  <!-- change to: -->
+<meta property="og:url" content="https://915devotional.com/devotionals.html">
+
+  <!-- CHANGE #2: og:title and og:description still say the OLD homepage text without DeWayne's name -->
+<meta property="og:title" content="9:15 Devotional — Daily Scripture & Prayer">
+  <!-- change to: -->
+<meta property="og:title" content="Devotional Archive with DeWayne Dunko | 9:15 Devotional">
+
+<meta property="og:description" content="A daily 9:15 AM devotional on Zoom, Monday through Thursday.">
+  <!-- change to: -->
+<meta property="og:description" content="Watch every 9:15 morning devotional with DeWayne Dunko. Search by date, scripture, or topic.">
+
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://915devotional.com/images/dewayne.png">
+
+  <title>DeWayne Dunko — 9:15 Devotional | Daily Scripture & Prayer</title>
+
+  <!-- CHANGE #3: description doesn't mention his name yet -->
+  <meta name="description" content="Watch every 9:15 morning devotional. Search by date, scripture, or topic.">
+  <!-- change to: -->
+  <meta name="description" content="Watch every 9:15 morning devotional with DeWayne Dunko. Search by date, scripture, or topic.">
+
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- CHANGE #4: add this JSON-LD block right before </head> -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Devotional Archive",
+    "url": "https://915devotional.com/devotionals.html",
+    "author": {
+      "@type": "Person",
+      "name": "DeWayne Dunko"
+    }
+  }
+  </script>
+</head>
+The <h1> here is fine as-is (Every devotional, anytime.) — no need to force his name into it since the page title already covers that clearly, and it's already a good, natural heading.
+Paste me prayer.html next and I'll mark that one up the same way.i figured out my problem i wasnt on indexAh, that'll do it. Good catch — makes sense now.
+So to recap: devotionals.html still needs those 3 URL/text fixes (canonical, og:url, og:title, og:description) I marked above since they were copy-pasted from index.html, and prayer.html still needs the full treatment from scratch. Want to paste prayer.html next, or are you good to handle that one yourself now that you've got the pattern?index <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>DeWayne Dunko — 9:15 Devotional | Daily Scripture & Prayer</title>
+  <meta name="description" content="Join DeWayne Dunko for the 9:15 AM devotional on Zoom, Monday through Thursday. Watch past devotionals, join live, and submit prayer requests.">
+  <link rel="canonical" href="https://915devotional.com/">
+<meta property="og:title" content="DeWayne Dunko — 9:15 Devotional">
+<meta property="og:description" content="Join DeWayne Dunko for the 9:15 AM devotional on Zoom, Monday through Thursday.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://915devotional.com/">
+<meta property="og:image" content="https://915devotional.com/images/dewayne.png">
+<link rel="stylesheet" href="styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "9:15 Devotional",
+  "url": "https://915devotional.com/",
+  "author": {
+    "@type": "Person",
+    "name": "DeWayne Dunko"
+  }
+}
+</script>
+</head>Show moreThis one's all correct content-wise — nice work. Just one cleanup needed: the styles.css and font <link> tags got pasted in twice (duplicated block). Not a huge deal functionally, but worth trimming so the page doesn't load the same stylesheet/fonts twice.
+Here's the fixed version:
+html<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeWayne Dunko — 9:15 Devotional | Daily Scripture & Prayer</title>
+  <meta name="description" content="Join DeWayne Dunko for the 9:15 AM devotional on Zoom, Monday through Thursday. Watch past devotionals, join live, and submit prayer requests.">
+  <link rel="canonical" href="https://915devotional.com/">
+  <meta property="og:title" content="DeWayne Dunko — 9:15 Devotional">
+  <meta property="og:description" content="Join DeWayne Dunko for the 9:15 AM devotional on Zoom, Monday through Thursday.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://915devotional.com/">
+  <meta property="og:image" content="https://915devotional.com/images/dewayne.png">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "9:15 Devotional",
+  "url": "https://915devotional.com/",
+  "author": {
+    "@type": "Person",
+    "name": "DeWayne Dunko"
+  }
+}
+</script>
 </head>
 <body>
 
