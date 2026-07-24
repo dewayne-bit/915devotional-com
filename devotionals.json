@@ -6,5 +6,132 @@
     "passcode": "6NzD92",
     "scheduleNote": "Mon–Thu at 9:15 AM ET"
   },
-  "devotionals": []
+  "devotionals": [
+    {
+      "date": "2026-07-23",
+      "title": "Fruit of the Spirit: Joy",
+      "scriptures": ["Galatians 5:22-23"],
+      "youtubeId": "G_UeBqNqrCs",
+      "summary": ""
+    },
+    {
+      "date": "2026-07-22",
+      "title": "Fruit of the Spirit",
+      "scriptures": ["Galatians 5:22"],
+      "youtubeId": "XTdyo-s5jz0",
+      "summary": ""
+    },
+    {
+      "date": "2026-07-21",
+      "title": "James 2:2-4",
+      "scriptures": ["James 2:2-4"],
+      "youtubeId": "49uwCYrZVws",
+      "summary": ""
+    },
+    {
+      "date": "2026-07-20",
+      "title": "Proverbs 20:18 & 21:23",
+      "scriptures": ["Proverbs 20:18", "Proverbs 21:23"],
+      "youtubeId": "RDL9dmgtS7k",
+      "summary": ""
+    },
+    {
+      "date": "2026-07-16",
+      "title": "Colossians 3:12-13",
+      "scriptures": ["Colossians 3:12-13"],
+      "youtubeId": "N6F0htfoE3c",
+      "summary": ""
+    },
+    {
+      "date": "2026-07-15",
+      "title": "Proverbs 22:3",
+      "scriptures": ["Proverbs 22:3"],
+      "youtubeId": "MJXcy2VEUq8",
+      "summary": ""
+    },
+    {
+      "date": "2026-07-14",
+      "title": "Mark 11:25",
+      "scriptures": ["Mark 11:25"],
+      "youtubeId": "afpHlBCs_aU",
+      "summary": ""
+    },
+    {
+      "date": "2026-07-13",
+      "title": "Matthew 15:21-35",
+      "scriptures": ["Matthew 15:21-35"],
+      "youtubeId": "Vlz6WyNXsLA",
+      "summary": ""
+    },
+    {
+      "date": "2026-07-09",
+      "title": "One Last Word From Mom",
+      "scriptures": [],
+      "youtubeId": "SoRBZYQ_4Gg",
+      "summary": ""
+    },
+    {
+      "date": "2026-07-08",
+      "title": "Job 3:25",
+      "scriptures": ["Job 3:25"],
+      "youtubeId": "R3MM3yLgInY",
+      "summary": ""
+    },
+    {
+      "date": "2026-07-07",
+      "title": "1 John 4:20",
+      "scriptures": ["1 John 4:20"],
+      "youtubeId": "j4CdU49C7rI",
+      "summary": ""
+    },
+    {
+      "date": "2026-07-06",
+      "title": "Ecclesiastes 2:26",
+      "scriptures": ["Ecclesiastes 2:26"],
+      "youtubeId": "jJTxilddGxU",
+      "summary": ""
+    },
+    {
+      "date": "2026-07-02",
+      "title": "Acts 15:36-41",
+      "scriptures": ["Acts 15:36-41"],
+      "youtubeId": "9y-B93wMjGE",
+      "summary": ""
+    },
+    {
+      "date": "2026-07-01",
+      "title": "1 Peter 4:8",
+      "scriptures": ["1 Peter 4:8"],
+      "youtubeId": "zdUuD81030k",
+      "summary": ""
+    },
+    {
+      "date": "2026-06-30",
+      "title": "Romans 8:28",
+      "scriptures": ["Romans 8:28"],
+      "youtubeId": "T_N8U1x0354",
+      "summary": ""
+    },
+    {
+      "date": "2026-06-29",
+      "title": "Philippians 4:4",
+      "scriptures": ["Philippians 4:4"],
+      "youtubeId": "Oslp-Hr6eYM",
+      "summary": ""
+    },
+    {
+      "date": "2026-06-25",
+      "title": "Proverbs 25:21-22",
+      "scriptures": ["Proverbs 25:21-22"],
+      "youtubeId": "tUteDu_29BM",
+      "summary": ""
+    },
+    {
+      "date": "2021-03-21",
+      "title": "Bible 101: An Intro to God's Instruction Manual",
+      "scriptures": [],
+      "youtubeId": "6G7a44B6rwg",
+      "summary": ""
+    }
+  ]
 }

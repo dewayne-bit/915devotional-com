@@ -1,0 +1,47 @@
+name: Update devotionals from YouTube
+
+# Checks the 9:15 Devotional YouTube channel every morning and adds any new
+# videos to the site automatically. Runs on GitHub's servers for free — no Mac,
+# no Claude, and no stored passwords or tokens required.
+
+on:
+  schedule:
+    # 15:00 UTC daily = 11:00 AM EDT / 10:00 AM EST — always before noon Eastern.
+    # (GitHub may delay scheduled runs during busy periods, so we aim early.)
+    - cron: '0 15 * * *'
+  workflow_dispatch: {}   # adds a manual "Run workflow" button in the Actions tab
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-devotionals
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the site
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Look for new devotionals
+        run: python scripts/update_devotionals.py
+
+      - name: Publish if anything changed
+        run: |
+          if [ -n "$(git status --porcelain devotionals.json)" ]; then
+            git config user.name "915 Devotional Bot"
+            git config user.email "actions@users.noreply.github.com"
+            git add devotionals.json
+            git commit -m "Auto-add new devotional(s) from YouTube [skip ci]"
+            git push
+            echo "Published new devotional(s)."
+          else
+            echo "Nothing new today."
+          fi
