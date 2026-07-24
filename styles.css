@@ -134,6 +134,33 @@ a:hover {
   border-bottom-color: var(--color-gold);
 }
 
+/* ---------- Hero banner image ---------- */
+
+.hero-banner {
+  padding: 28px 0 0;
+  background: var(--color-bg);
+}
+
+.hero-banner-img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.hero-banner + .hero {
+  padding-top: 44px;
+}
+
+@media (max-width: 580px) {
+  .hero-banner {
+    padding-top: 16px;
+  }
+  .hero-banner + .hero {
+    padding-top: 28px;
+  }
+}
+
 /* ---------- Hero ---------- */
 
 .hero {
