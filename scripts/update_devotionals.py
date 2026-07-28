@@ -4,9 +4,20 @@
 
 Runs on a schedule inside GitHub Actions. Checks the channel's public RSS
 feed for any newly uploaded videos and adds them to devotionals.json so the
-site publishes them automatically. Best-effort: it fills in the video title
-and (when it can parse one) a scripture reference. DeWayne can polish any
-title/scripture by editing devotionals.json directly.
+site publishes them automatically.
+
+Scripture references are parsed from the video TITLE. It understands the
+common ways DeWayne titles videos:
+  "1 Peter 3:15"            -> 1 Peter 3:15
+  "Acts 15: 36-41"          -> Acts 15:36-41
+  "Mark 11 25"              -> Mark 11:25
+  "Colossians 3 12 13"      -> Colossians 3:12-13
+  "James 2 2to 4"           -> James 2:2-4
+  "Galatians 5 and 22"      -> Galatians 5:22
+  "matthew 13 31and 32"     -> Matthew 13:31-32
+  "Proverbs 20 18 and 21 23"-> Proverbs 20:18, Proverbs 21:23
+When a title is too ambiguous to be sure, it leaves the scripture blank
+rather than guessing wrong — DeWayne can add it in a few seconds.
 """
 
 import json
@@ -21,7 +32,6 @@ CHANNEL_ID = "UCxjMHqqFNMEzl4aBwidt17Q"
 FEED_URL = f"https://www.youtube.com/feeds/videos.xml?channel_id={CHANNEL_ID}"
 JSON_PATH = os.path.join(os.path.dirname(__file__), "..", "devotionals.json")
 
-# Bible books, longest-first so "1 John" wins over "John", etc.
 BOOKS = [
     "Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy", "Joshua",
     "Judges", "Ruth", "1 Samuel", "2 Samuel", "1 Kings", "2 Kings",
@@ -38,8 +48,7 @@ BOOKS = [
 ]
 BOOKS_SORTED = sorted(BOOKS, key=len, reverse=True)
 BOOK_ALT = "|".join(re.escape(b) for b in BOOKS_SORTED)
-# Matches "Book Chapter:Verse" or "Book Chapter:Verse-Verse" (conservative: colon required)
-REF_RE = re.compile(rf"\b({BOOK_ALT})\s+(\d+):\s*(\d+)(?:\s*-\s*(\d+))?", re.IGNORECASE)
+BOOK_RE = re.compile(rf"\b({BOOK_ALT})\b", re.IGNORECASE)
 
 
 def fetch_feed():
@@ -77,15 +86,78 @@ def canonical_book(name):
     return name.title()
 
 
+def _fmt(book, chap, v1, v2=None):
+    return f"{book} {chap}:{v1}" + (f"-{v2}" if v2 else "")
+
+
+def _parse_tail(book, tail):
+    """Interpret the text right after a book name into scripture refs."""
+    tokens = re.findall(r"\d+|:|-|–|to|thru|and|&|,", tail.lower())
+    if not any(t.isdigit() for t in tokens):
+        return []
+
+    # ---- Colon form: authoritative — parse "chap:verse[-verse]" possibly repeated
+    if ":" in tokens:
+        refs = []
+        for m in re.finditer(r"(\d+)\s*:\s*(\d+)(?:\s*[-–]\s*(\d+))?", tail):
+            refs.append(_fmt(book, m.group(1), m.group(2), m.group(3)))
+        return refs
+
+    # ---- No colon: infer from the number groups, split on 'and'/'&'/','
+    segments = [[]]
+    for tok in tokens:
+        if tok in ("and", "&", ","):
+            if segments[-1]:
+                segments.append([])
+        elif tok.isdigit():
+            segments[-1].append(int(tok))
+        # '-','to','thru','–' are range hints; the numbers themselves carry it
+    segments = [s for s in segments if s]
+    if not segments:
+        return []
+
+    if len(segments) == 1:
+        s = segments[0]
+        if len(s) == 2:
+            return [_fmt(book, s[0], s[1])]
+        if len(s) == 3:
+            return [_fmt(book, s[0], s[1], s[2])]
+        return []  # 1 number (chapter only) or 4+ (too ambiguous)
+
+    if len(segments) == 2:
+        a, b = segments
+        if len(a) == 1 and len(b) == 1:
+            return [_fmt(book, a[0], b[0])]                          # "5 and 22" -> 5:22
+        if len(a) == 2 and len(b) == 2:
+            return [_fmt(book, a[0], a[1]), _fmt(book, b[0], b[1])]  # two refs
+        if len(a) == 2 and len(b) == 1:
+            if b[0] == a[1] + 1:
+                return [_fmt(book, a[0], a[1], b[0])]                # consecutive -> range
+            return [_fmt(book, a[0], a[1]), _fmt(book, a[0], b[0])]
+        return []
+
+    return []  # 3+ segments: too ambiguous, leave blank
+
+
 def parse_scriptures(raw):
     refs = []
-    for m in REF_RE.finditer(raw):
+    matches = list(BOOK_RE.finditer(raw))
+    for i, m in enumerate(matches):
         book = canonical_book(m.group(1))
-        chap, v1, v2 = m.group(2), m.group(3), m.group(4)
-        ref = f"{book} {chap}:{v1}" + (f"-{v2}" if v2 else "")
-        if ref not in refs:
-            refs.append(ref)
+        start = m.end()
+        end = matches[i + 1].start() if i + 1 < len(matches) else len(raw)
+        for ref in _parse_tail(book, raw[start:end]):
+            if ref not in refs:
+                refs.append(ref)
     return refs
+
+
+def make_title(raw):
+    """Prefer a clean scripture-reference title; fall back to the cleaned raw title."""
+    scr = parse_scriptures(raw)
+    if scr:
+        return " & ".join(scr)
+    return clean_title(raw)
 
 
 def snap_to_devotional_day(iso_date):
@@ -93,7 +165,7 @@ def snap_to_devotional_day(iso_date):
     y, m, d = map(int, iso_date.split("-"))
     dt = datetime.date(y, m, d)
     wd = dt.weekday()  # Mon=0 .. Sun=6
-    if wd >= 4:  # Fri, Sat, Sun
+    if wd >= 4:
         dt = dt - datetime.timedelta(days=wd - 3)
     return dt.isoformat()
 
@@ -117,7 +189,7 @@ def main():
             continue
         entry = {
             "date": snap_to_devotional_day(e["published"]),
-            "title": clean_title(e["title"]),
+            "title": make_title(e["title"]),
             "scriptures": parse_scriptures(e["title"]),
             "youtubeId": e["id"],
             "summary": "",
