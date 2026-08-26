@@ -61,6 +61,42 @@
         <a href="#join-live" class="btn btn-primary">Join Live on Zoom</a>
         <a href="devotionals.html" class="btn btn-ghost">Watch Past Devotionals</a>
       </div>
+
+      <div class="scripture-ask">
+        <div class="scripture-ask-card">
+          <h2>Scripture You'd Like Covered?</h2>
+          <p class="scripture-ask-note">Is there a verse, passage, or topic you'd like DeWayne to walk through on a morning? Send it over.</p>
+
+          <form id="scripture-form" action="https://formspree.io/f/mzdojgvd" method="POST">
+            <div class="field">
+              <label for="scripture-request" class="sr-only">Scripture or topic</label>
+              <textarea id="scripture-request" name="scripture_request" rows="3" required placeholder="e.g. Romans 8, or &ldquo;how to handle worry at work&rdquo;&hellip;"></textarea>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="scripture-name">Your name <span class="optional">(optional)</span></label>
+                <input type="text" id="scripture-name" name="name" autocomplete="name">
+              </div>
+              <div class="field">
+                <label for="scripture-email">Email <span class="optional">(optional)</span></label>
+                <input type="email" id="scripture-email" name="email" autocomplete="email">
+              </div>
+            </div>
+
+            <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+            <input type="hidden" name="_subject" value="New scripture suggestion from 915devotional.com">
+
+            <button type="submit" class="btn btn-primary">Send Suggestion</button>
+          </form>
+
+          <div id="scripture-success" class="form-success hidden">
+            <h3>Thank you.</h3>
+            <p>Your suggestion has been received &mdash; DeWayne reads every one.</p>
+            <p><em>&ldquo;Your word is a lamp for my feet, a light on my path.&rdquo; &mdash; Psalm 119:105</em></p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 

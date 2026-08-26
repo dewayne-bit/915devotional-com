@@ -242,6 +242,39 @@
     });
   }
 
+  // ---------- Scripture suggestion form (home hero) ----------
+
+  function bindScriptureForm() {
+    const form = $('#scripture-form');
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const success = $('#scripture-success');
+      const btn = form.querySelector('button[type="submit"]');
+      const data = new FormData(form);
+      if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          form.classList.add('hidden');
+          if (success) success.classList.remove('hidden');
+        } else {
+          const json = await res.json().catch(() => ({}));
+          alert(json.error || 'Something went wrong sending your suggestion. Please try again or email dewayne@shingleusa.com directly.');
+        }
+      } catch (err) {
+        alert('Network error. Please try again, or email dewayne@shingleusa.com directly.');
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'Send Suggestion'; }
+      }
+    });
+  }
+
   // ---------- Init ----------
 
   function setYear() {
@@ -252,6 +285,7 @@
   async function init() {
     setYear();
     bindPrayerForm();
+    bindScriptureForm();
 
     // Only fetch data if we're on a page that needs it.
     const needsData =
