@@ -915,3 +915,203 @@ a:hover {
     padding: 24px;
   }
 }
+
+/* ---------- Scripture List page ---------- */
+
+.list-stats {
+  font-size: 15px;
+  color: var(--color-text-soft);
+  margin: 6px 0 0;
+}
+
+.list-stats strong {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.book-jump {
+  padding: 4px 0 0;
+  background: var(--color-bg-alt);
+}
+
+.book-jump-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  padding: 22px 0 26px;
+  border-top: 1px solid var(--color-border);
+}
+
+.jump-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 13px;
+  border-radius: 999px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--color-text-soft);
+  text-decoration: none;
+  transition: border-color 0.15s, color 0.15s, box-shadow 0.15s;
+}
+
+.jump-chip:hover {
+  color: var(--color-accent);
+  border-color: var(--color-gold-soft);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+}
+
+.jump-chip span {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-gold);
+}
+
+.scripture-list {
+  padding: 46px 0 70px;
+}
+
+.testament-block {
+  margin-bottom: 14px;
+}
+
+.testament-head {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--color-gold);
+  margin: 34px 0 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.testament-block:first-child .testament-head {
+  margin-top: 0;
+}
+
+.book-block {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 22px 26px 12px;
+  margin-bottom: 16px;
+  scroll-margin-top: 24px;
+}
+
+.book-head {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--color-accent);
+  margin: 0 0 10px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.book-count {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-gold);
+  background: var(--color-bg-alt);
+  border-radius: 999px;
+  padding: 2px 9px;
+}
+
+.book-note {
+  margin: -4px 0 8px;
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.verse-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.verse-row + .verse-row {
+  border-top: 1px solid var(--color-border);
+}
+
+.verse-link {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 10px;
+  margin: 0 -10px;
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.verse-link:hover {
+  background: var(--color-bg);
+  text-decoration: none;
+}
+
+.verse-ref {
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+
+.verse-ref-wide {
+  white-space: normal;
+}
+
+.verse-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  text-align: right;
+  min-width: 0;
+}
+
+.verse-title {
+  font-size: 14px;
+  color: var(--color-text-soft);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.verse-date {
+  font-size: 13px;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+.other-block {
+  margin-top: 26px;
+}
+
+@media (max-width: 620px) {
+  .book-block { padding: 20px 18px 10px; }
+  .book-head { font-size: 23px; }
+  .verse-link {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+  }
+  .verse-meta {
+    text-align: left;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .verse-title { white-space: normal; }
+}
+
+@media (max-width: 580px) {
+  .nav { gap: 14px; }
+}

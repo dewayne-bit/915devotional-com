@@ -25,6 +25,7 @@ import re
 import html
 import urllib.request
 import datetime
+import difflib
 import os
 import sys
 
@@ -49,6 +50,91 @@ BOOKS = [
 BOOKS_SORTED = sorted(BOOKS, key=len, reverse=True)
 BOOK_ALT = "|".join(re.escape(b) for b in BOOKS_SORTED)
 BOOK_RE = re.compile(rf"\b({BOOK_ALT})\b", re.IGNORECASE)
+
+# ---- Fuzzy book-name matching -------------------------------------------
+# DeWayne types titles fast on his phone, so book names get misspelled
+# ("Galations", "corithians", "Eccleciastes"). Exact matching silently
+# dropped those scriptures. We now fall back to a close-match lookup.
+
+# Books that only ever appear with a number in front of them.
+NUMBERED_ONLY = {
+    "samuel", "kings", "chronicles", "corinthians",
+    "thessalonians", "timothy", "peter",
+}
+# Books that exist both bare and numbered (the Gospel of John vs 1-3 John).
+NUMBERED_OPTIONAL = {"john"}
+
+# base name (no leading number) -> canonical display name
+BASE_TO_BOOK = {}
+for _b in BOOKS:
+    _base = _b.split(" ", 1)[1] if _b[0].isdigit() else _b
+    BASE_TO_BOOK.setdefault(_base.lower(), _base)
+BASE_TO_BOOK["psalm"] = "Psalms"          # normalize to one heading
+BASE_NAMES = list(BASE_TO_BOOK.keys())
+
+NUM_PREFIX = {
+    "1": 1, "2": 2, "3": 3,
+    "1st": 1, "2nd": 2, "3rd": 3,
+    "first": 1, "second": 2, "third": 3,
+    "i": 1, "ii": 2, "iii": 3,
+}
+
+WORD_RE = re.compile(r"[A-Za-z]+|\d+")
+
+
+def _canonical_from_base(base_key, number):
+    """Build the display name, e.g. ('peter', 1) -> '1 Peter'."""
+    base = BASE_TO_BOOK[base_key]
+    if base_key in NUMBERED_ONLY:
+        return f"{number or 1} {base}"
+    if base_key in NUMBERED_OPTIONAL and number:
+        return f"{number} {base}"
+    return base
+
+
+def find_books(raw):
+    """Yield (canonical_book, span_start, name_end) for each book named in raw.
+
+    Exact names match anywhere. Misspellings only match when a digit follows
+    close behind — that keeps ordinary words ('Joy', 'Last', 'Mom') from
+    being mistaken for books.
+    """
+    tokens = [(m.group(0), m.start(), m.end()) for m in WORD_RE.finditer(raw)]
+    found = []
+    for i, (tok, ts, te) in enumerate(tokens):
+        if not tok.isalpha():
+            continue
+        low = tok.lower()
+        if low in NUM_PREFIX:      # this is a prefix, not a book name
+            continue
+
+        # "Song of Solomon" / "Song of Songs" — the only multi-word titles.
+        if low == "song" and i + 2 < len(tokens) and tokens[i + 1][0].lower() == "of":
+            third = tokens[i + 2][0].lower()
+            if third in ("solomon", "songs"):
+                found.append(("Song of Solomon", ts, tokens[i + 2][2]))
+                continue
+
+        base_key = None
+        if low in BASE_TO_BOOK:
+            base_key = low
+        elif len(low) >= 5 and re.match(r"[\s:.,\-]*\d", raw[te:te + 12]):
+            close = difflib.get_close_matches(low, BASE_NAMES, n=1, cutoff=0.8)
+            if close:
+                base_key = close[0]
+        if not base_key:
+            continue
+
+        # Look back one token for a leading 1/2/3.
+        number = None
+        span_start = ts
+        if i > 0:
+            prev, ps, pe = tokens[i - 1]
+            if prev.lower() in NUM_PREFIX and raw[pe:ts].strip(" .") == "":
+                number = NUM_PREFIX[prev.lower()]
+                span_start = ps
+        found.append((_canonical_from_base(base_key, number), span_start, te))
+    return found
 
 
 def fetch_feed():
@@ -122,7 +208,9 @@ def _parse_tail(book, tail):
             return [_fmt(book, s[0], s[1])]
         if len(s) == 3:
             return [_fmt(book, s[0], s[1], s[2])]
-        return []  # 1 number (chapter only) or 4+ (too ambiguous)
+        if len(s) == 1:
+            return [f"{book} {s[0]}"]   # whole chapter, e.g. "Psalm 23"
+        return []  # 4+ numbers: too ambiguous
 
     if len(segments) == 2:
         a, b = segments
@@ -141,12 +229,10 @@ def _parse_tail(book, tail):
 
 def parse_scriptures(raw):
     refs = []
-    matches = list(BOOK_RE.finditer(raw))
-    for i, m in enumerate(matches):
-        book = canonical_book(m.group(1))
-        start = m.end()
-        end = matches[i + 1].start() if i + 1 < len(matches) else len(raw)
-        for ref in _parse_tail(book, raw[start:end]):
+    matches = find_books(raw)
+    for i, (book, span_start, name_end) in enumerate(matches):
+        end = matches[i + 1][1] if i + 1 < len(matches) else len(raw)
+        for ref in _parse_tail(book, raw[name_end:end]):
             if ref not in refs:
                 refs.append(ref)
     return refs
@@ -211,6 +297,17 @@ def main():
     print(f"Added {len(added)} new devotional(s):")
     for a in added:
         print(f"  {a['date']}  {a['title']}  ({a['youtubeId']})  {a['scriptures']}")
+
+    # Anything without a scripture won't appear under a book on list.html —
+    # it lands in "Other Devotionals" instead. Call it out loudly in the log.
+    missing = [a for a in added if not a["scriptures"]]
+    if missing:
+        print("")
+        print("WARNING: no scripture could be read from these video titles.")
+        print("They will show under 'Other Devotionals' on the Scripture List")
+        print("page until a reference is added to devotionals.json:")
+        for a in missing:
+            print(f"  {a['date']}  {a['title']}")
     return 0
 
 
