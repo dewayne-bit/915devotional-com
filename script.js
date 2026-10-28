@@ -42,6 +42,19 @@
     return `https://www.youtube.com/embed/${encodeURIComponent(id)}?rel=0&modestbranding=1`;
   }
 
+  // Each video has its own page at d.url (added by build.py). Falls back to plain text locally.
+  function titleLink(d) {
+    return d.url
+      ? `<a href="${escapeHtml(d.url)}">${escapeHtml(d.title)}</a>`
+      : escapeHtml(d.title);
+  }
+
+  function pageLink(d) {
+    return d.url
+      ? `<p class="page-link"><a href="${escapeHtml(d.url)}">Read &amp; watch &rarr;</a></p>`
+      : '';
+  }
+
   // ---------- Render helpers ----------
 
   function renderFeatured(d) {
@@ -55,9 +68,10 @@
       </div>
       <div class="latest-meta">
         <p class="latest-date">${formatDate(d.date)}</p>
-        <h3>${escapeHtml(d.title)}</h3>
+        <h3>${titleLink(d)}</h3>
         <p class="scriptures"><span class="scriptures-label">Scripture:</span> ${escapeHtml(formatScriptures(d.scriptures))}</p>
         ${d.summary ? `<p class="summary">${escapeHtml(d.summary)}</p>` : ''}
+        ${pageLink(d)}
       </div>
     `;
   }
@@ -74,9 +88,10 @@
         </div>
         <div class="card-body">
           <p class="card-date">${formatDate(d.date)}</p>
-          <h3>${escapeHtml(d.title)}</h3>
+          <h3>${titleLink(d)}</h3>
           <p class="scriptures">${escapeHtml(formatScriptures(d.scriptures))}</p>
           ${d.summary ? `<p class="summary">${escapeHtml(d.summary)}</p>` : ''}
+          ${pageLink(d)}
         </div>
       </article>
     `;
@@ -103,7 +118,7 @@
 
   async function loadData() {
     try {
-      const res = await fetch('devotionals.json', { cache: 'no-store' });
+      const res = await fetch('/devotionals.json', { cache: 'no-store' });
       if (!res.ok) throw new Error('failed to load devotionals.json');
       return await res.json();
     } catch (err) {
@@ -272,7 +287,7 @@
         const showTitle = d.title && d.title !== p.ref;
         return `
           <li class="verse-row">
-            <a class="verse-link" href="devotionals.html?q=${encodeURIComponent(p.ref)}">
+            <a class="verse-link" href="${d.url ? escapeHtml(d.url) : 'devotionals.html?q=' + encodeURIComponent(p.ref)}">
               <span class="verse-ref">${escapeHtml(verse)}</span>
               <span class="verse-meta">
                 ${showTitle ? `<span class="verse-title">${escapeHtml(d.title)}</span>` : ''}
@@ -298,7 +313,7 @@
           <ul class="verse-list">
             ${noScripture.map(d => `
               <li class="verse-row">
-                <a class="verse-link" href="devotionals.html?q=${encodeURIComponent(d.title)}">
+                <a class="verse-link" href="${d.url ? escapeHtml(d.url) : 'devotionals.html?q=' + encodeURIComponent(d.title)}">
                   <span class="verse-ref verse-ref-wide">${escapeHtml(d.title)}</span>
                   <span class="verse-meta"><span class="verse-date">${formatDate(d.date)}</span></span>
                 </a>

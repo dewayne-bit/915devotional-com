@@ -1115,3 +1115,9 @@ a:hover {
 @media (max-width: 580px) {
   .nav { gap: 14px; }
 }
+
+/* Links from cards to each video's own page (archive/<slug>.html, built by build.py) */
+.devo-card h3 a, .latest-meta h3 a { color: inherit; text-decoration: none; }
+.devo-card h3 a:hover, .latest-meta h3 a:hover { color: var(--color-accent); text-decoration: underline; }
+.page-link { margin: 10px 0 0; font-size: 14px; font-weight: 600; }
+.page-link a { color: var(--color-accent); }

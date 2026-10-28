@@ -168,3 +168,34 @@ When you're ready for any of these, ask and we'll bolt it on.
 ---
 
 *"Therefore everyone who hears these words of mine and puts them into practice is like a wise man who built his house on the rock."* — Matthew 7:24
+
+---
+
+## Video pages (build.py) — added Oct 2026
+
+Every video in `devotionals.json` now gets its own page at `/archive/<slug>.html` (video, scripture,
+summary, and VideoObject schema tied to DeWayne Dunko). The cards on Home, Archive, and List link to them,
+and `sitemap.xml` lists them all.
+
+**How it runs:** Netlify runs `python3 build.py` on every push and publishes the `dist/` folder
+(see `netlify.toml`). The daily GitHub Action still adds new videos to `devotionals.json`; that push
+triggers a build, so each new video gets its page automatically. Nothing extra to do day to day.
+
+**Adding a write-up and transcript to a video (optional):**
+1. Copy a file in `content/devotionals/` and name it after the page, e.g. `ephesians-6-14.txt`.
+2. Set `youtube:` to that video's id. That is what links the file to the video, and the page keeps its URL.
+3. Fill in `title`, `scripture`, `summary` (under ~155 characters), and optionally `blog:` (Journal post)
+   or `transcript:` (link to a transcript published on carltondewaynedunko.com).
+4. Write the short devotional under `---` (`## ` = heading, `- ` = bullet, blank line = new paragraph),
+   then paste the YouTube transcript under `=== transcript ===` (timestamps are stripped automatically).
+5. This repo is PUBLIC: delete private details (prayer requests, personal stories) from the transcript before
+   committing. Anything committed stays in git history.
+
+**Keep it different from the other sites.** Write the 915 version fresh; don't copy the wording from
+carltondewaynedunko.com or the Journal. Publish each transcript on ONE site only. If carltondewaynedunko.com
+already has it, use the `transcript:` link instead of pasting it again.
+
+Lines starting with `//` in a header are notes. A file with `TODO` anywhere in its header or write-up is
+skipped until it's finished. To pin a URL, add `"slug": "my-slug"` to that video's entry in devotionals.json.
+
+Run locally: `python3 build.py`, then `cd dist && python3 -m http.server 8080`.
