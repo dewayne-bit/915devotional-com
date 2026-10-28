@@ -283,7 +283,7 @@ def build_jsonld(d, url):
         "url": "https://www.youtube.com/watch?v=%s" % d["youtube"],
         "inLanguage": "en", "isFamilyFriendly": True,
         "actor": {"@id": PERSON_ID}, "creator": {"@id": PERSON_ID}, "publisher": {"@id": oid},
-        "partOfSeries": {"@type": "CreativeWorkSeries", "name": SHOW, "@id": oid},
+        "partOfSeries": {"@type": "CreativeWorkSeries", "name": SHOW, "@id": SITE + "/#series", "url": SITE + "/"},
         "mainEntityOfPage": {"@id": url + "#webpage"},
     }
     if d["scripture"]:
