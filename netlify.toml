@@ -1,3 +1,21 @@
 [build]
   command = "python3 build.py"
   publish = "dist"
+
+# Old URLs from before scripture references were corrected
+[[redirects]]
+  from = "/archive/1-peter-1-5-6.html"
+  to = "/archive/1-peter-1-6-7.html"
+  status = 301
+[[redirects]]
+  from = "/archive/jeremiah-19-9.html"
+  to = "/archive/jeremiah-17-9.html"
+  status = 301
+[[redirects]]
+  from = "/archive/matthew-15-21-35.html"
+  to = "/archive/matthew-18-21-35.html"
+  status = 301
+[[redirects]]
+  from = "/archive/acts-11-25-26-2026-08-27.html"
+  to = "/archive/acts-11-25-26.html"
+  status = 301
