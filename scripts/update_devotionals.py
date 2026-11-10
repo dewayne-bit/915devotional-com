@@ -137,10 +137,26 @@ def find_books(raw):
     return found
 
 
-def fetch_feed():
-    req = urllib.request.Request(FEED_URL, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return r.read().decode("utf-8")
+def fetch_feed(attempts=4):
+    # YouTube's RSS feed occasionally returns a 404/500 to GitHub's servers for
+    # a few minutes. Retry with a growing pause instead of failing the run.
+    import time
+    last_err = None
+    for i in range(attempts):
+        try:
+            req = urllib.request.Request(FEED_URL, headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, timeout=30) as r:
+                xml = r.read().decode("utf-8")
+            if "<feed" in xml:
+                return xml
+            last_err = RuntimeError("response was not a YouTube feed")
+        except Exception as e:
+            last_err = e
+        if i < attempts - 1:
+            wait = 30 * (i + 1)
+            print(f"Feed attempt {i + 1} failed ({last_err}); retrying in {wait}s...", file=sys.stderr)
+            time.sleep(wait)
+    raise last_err
 
 
 def parse_entries(xml):
