@@ -9,6 +9,10 @@ on:
     # 15:00 UTC daily = 11:00 AM EDT / 10:00 AM EST — always before noon Eastern.
     # (GitHub may delay scheduled runs during busy periods, so we aim early.)
     - cron: '0 15 * * *'
+    # Backstop run at 22:00 UTC (5-6 PM Eastern) catches afternoon uploads and
+    # retries if the morning run hit a YouTube hiccup. Only commits when there's
+    # actually a new video, so it doesn't add Netlify deploys.
+    - cron: '0 22 * * *'
   workflow_dispatch: {}   # adds a manual "Run workflow" button in the Actions tab
 
 permissions:
