@@ -31,6 +31,12 @@ import sys
 
 CHANNEL_ID = "UCxjMHqqFNMEzl4aBwidt17Q"
 FEED_URL = f"https://www.youtube.com/feeds/videos.xml?channel_id={CHANNEL_ID}"
+# Backup: the channel's "uploads" playlist (channel id with UC -> UU).
+UPLOADS_PLAYLIST_ID = "UU" + CHANNEL_ID[2:]
+FEED_URLS = [
+    FEED_URL,
+    f"https://www.youtube.com/feeds/videos.xml?playlist_id={UPLOADS_PLAYLIST_ID}",
+]
 JSON_PATH = os.path.join(os.path.dirname(__file__), "..", "devotionals.json")
 
 BOOKS = [
@@ -138,23 +144,29 @@ def find_books(raw):
 
 
 def fetch_feed(attempts=4):
-    # YouTube's RSS feed occasionally returns a 404/500 to GitHub's servers for
-    # a few minutes. Retry with a growing pause instead of failing the run.
+    # YouTube's channel RSS feed sometimes returns 404/500 to GitHub's servers
+    # for a while (seen 11/13-11/15/2026, every evening run). The uploads
+    # PLAYLIST feed is served separately and carries the same videos, so each
+    # attempt tries the channel feed first and falls back to the playlist feed.
     import time
     last_err = None
     for i in range(attempts):
-        try:
-            req = urllib.request.Request(FEED_URL, headers={"User-Agent": "Mozilla/5.0"})
-            with urllib.request.urlopen(req, timeout=30) as r:
-                xml = r.read().decode("utf-8")
-            if "<feed" in xml:
-                return xml
-            last_err = RuntimeError("response was not a YouTube feed")
-        except Exception as e:
-            last_err = e
+        for url in FEED_URLS:
+            try:
+                req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+                with urllib.request.urlopen(req, timeout=30) as r:
+                    xml = r.read().decode("utf-8")
+                if "<feed" in xml:
+                    if url != FEED_URLS[0]:
+                        print(f"Channel feed unavailable; used backup feed {url}")
+                    return xml
+                last_err = RuntimeError(f"response from {url} was not a YouTube feed")
+            except Exception as e:
+                last_err = e
+                print(f"Feed {url} failed ({e})", file=sys.stderr)
         if i < attempts - 1:
             wait = 30 * (i + 1)
-            print(f"Feed attempt {i + 1} failed ({last_err}); retrying in {wait}s...", file=sys.stderr)
+            print(f"All feeds failed on attempt {i + 1}; retrying in {wait}s...", file=sys.stderr)
             time.sleep(wait)
     raise last_err
 
